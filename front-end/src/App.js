@@ -10,7 +10,6 @@ import Login from './Pages/Login';
 import rockGlass from './images/rockGlass.svg';
 
 function App() {
-
   return (
     <div className="App">
       <span className="logo">TRYBE</span>
