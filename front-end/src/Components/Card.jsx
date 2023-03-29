@@ -8,7 +8,7 @@ function Card({ card }) {
       <div className="Card__container">
         <div className="Card__container__top">
           <p data-testid={ `customer_products__element-card-price-${card.id}` }>
-            {card.price}
+            {(card.price).replace(/\./g, ',')}
           </p>
           <img
             data-testid={ `customer_products__img-card-bg-image-${card.id}` }

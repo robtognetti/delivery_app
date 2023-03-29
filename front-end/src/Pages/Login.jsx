@@ -19,6 +19,7 @@ function Login() {
           password,
         },
       );
+      localStorage.setItem('user', JSON.stringify(res.data));
       const { role } = res.data;
       console.log(role);
       if (role === 'customer') {
