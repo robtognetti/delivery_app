@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Register() {
-  const [error, seterror] = useState(null);
+  const [error, setError] = useState(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isValid, setIsValid] = useState(false);
   const handleSubmit = () => {
     console.log('q');
   };
 
-  const handleChange = () => {
-    console.log('asda');
+  const validateInputs = () => {
+    const MIN_PASSWORD_LENGTH = 6;
+    const MIN_NAME = 12;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailIsValid = emailRegex.test(email);
+    console.log(emailIsValid);
+    if (
+      password.length >= MIN_PASSWORD_LENGTH
+      && emailIsValid
+      && name.length >= MIN_NAME
+    ) {
+      setIsValid(true);
+    }
   };
+
+  useEffect(() => {
+    validateInputs();
+  }, [email, password, name]);
+
   return (
     <div className="register">
       <form onSubmit={ handleSubmit }>
-        <h1>Create a new account</h1>
+        <h1>Nova conta:</h1>
 
         <label htmlFor="nome">
           Nome
@@ -21,7 +41,7 @@ function Register() {
             name="nome"
             type="text"
             placeholder="Seu nome"
-            onChange={ handleChange }
+            onChange={ (e) => setName(e.target.value) }
           />
         </label>
         <label htmlFor="email">
@@ -31,7 +51,7 @@ function Register() {
             name="email"
             type="email"
             placeholder="email"
-            onChange={ handleChange }
+            onChange={ (e) => setEmail(e.target.value) }
           />
         </label>
         <label htmlFor="passowrd">
@@ -40,10 +60,14 @@ function Register() {
             data-testid="common_register__input-password"
             name="password"
             type="password"
-            onChange={ handleChange }
+            onChange={ (e) => setPassword(e.target.value) }
           />
         </label>
-        <button data-testid="common_register__button-register" type="submit">
+        <button
+          data-testid="common_register__button-register"
+          type="submit"
+          disabled={ !isValid }
+        >
           Cadastrar
         </button>
 
