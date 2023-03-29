@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from './Pages/Login';
 import Products from './Pages/Products';
 import Register from './Pages/Register';
+import Orders from './Pages/Orders';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route exact path="/login" element={ <Login /> } />
       <Route exact path="/customer/products" element={ <Products /> } />
       <Route exact path="/register" element={ <Register /> } />
+      <Route exact path="/customer/orders" element={ <Orders /> } />
     </Routes>
 
   );
