@@ -8,10 +8,10 @@ import Register from './Pages/Register';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={ <Navigate to="/login" /> } />
-      <Route path="/login" element={ <Login /> } />
-      <Route path="/customer/products" element={ <Products /> } />
-      <Route path="/register" element={ <Register /> } />
+      <Route exact path="/" element={ <Navigate to="/login" /> } />
+      <Route exact path="/login" element={ <Login /> } />
+      <Route exact path="/customer/products" element={ <Products /> } />
+      <Route exact path="/register" element={ <Register /> } />
     </Routes>
 
   );
