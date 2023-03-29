@@ -1,3 +1,4 @@
+// test
 const productsList = [
   {
     name: 'Skol Lata 250ml', 
