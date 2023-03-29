@@ -8,6 +8,7 @@ function Login() {
   const [error, setError] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -74,7 +75,11 @@ function Login() {
         >
           Login
         </button>
-        <button data-testid="common_login__button-register" type="button" onClick={()=>navigate("/register")}>
+        <button
+          data-testid="common_login__button-register"
+          type="button"
+          onClick={ () => navigate('/register') }
+        >
           Ainda não tenho conta
         </button>
         {error && (
