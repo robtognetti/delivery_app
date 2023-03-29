@@ -1,9 +1,8 @@
 const { loginService } = require('../services/LoginService');
 
  const loginController = async (req, res) => {
-        const { email } = req.body;
-        const user = await loginService(email);
-        if (!user) return res.status(404).json({ message: 'User not found' });
+        const user = await loginService(req, res);
+        if (!user) return res.status(404).json({ message: 'User or Password not found' });
         return res.status(200).json(user);
     };
 

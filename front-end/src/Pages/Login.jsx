@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [isValid, setIsValid] = useState(false);
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -17,7 +18,11 @@ function Login() {
           password,
         },
       );
-      console.log(res, 'res');
+      const { role } = res.data;
+      console.log(role);
+      if (role === 'customer') {
+        navigate('/customer/products');
+      }
     } catch (err) {
       setError(err.response.data.message);
     }
