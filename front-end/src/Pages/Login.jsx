@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -6,9 +7,20 @@ function Login() {
   const [error, setError] = useState(null);
   const [isValid, setIsValid] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console('done');
+    try {
+      const res = await axios.post(
+        'http://localhost:3001/login',
+        {
+          email,
+          password,
+        },
+      );
+      console.log(res, 'res');
+    } catch (err) {
+      setError(err.response.data.message);
+    }
   };
 
   const validateInputs = () => {
