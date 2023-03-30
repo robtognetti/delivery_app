@@ -1,12 +1,29 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+
 import Navbar from '../Components/Navbar';
 import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 import Address from '../Components/Address';
 
 function Checkout() {
-  const { total } = useContext(Context);
+  const { total, update, setUpdate, getTotalPriceFromCart } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+  useEffect(() => {
+  }, [total]);
+
+  const handleRemove = ({ target: { id } }) => {
+    const cartL = JSON.parse(localStorage.getItem('carrinho')) || [];
+    console.log(cartL);
+    if (cartL !== []) {
+      const newCart = cartL.filter((item) => item.productId !== id);
+      localStorage.setItem('carrinho', JSON.stringify(newCart));
+      getTotalPriceFromCart();
+      setUpdate(!update);
+    } else {
+      console.log('empety');
+    }
+  };
   return (
     <main className="Checkout">
       <Navbar />
@@ -19,12 +36,13 @@ function Checkout() {
           <tbody>
             {cart.map((item, index) => (
               <tr key={ index }>
+                {console.log(item, 'ITEM')}
                 <td
                   data-testid={
                     `customer_checkout__element-order-table-item-number-${index}`
                   }
                 >
-                  {index + 1 }
+                  {index + 1}
                 </td>
                 <td
                   data-testid={
@@ -45,21 +63,29 @@ function Checkout() {
                     `customer_checkout__element-order-table-unit-price-${index}`
                   }
                 >
-                  {item.unitPrice}
+                  {item.unitPrice.toFixed(2).toString().replace(/\./g, ',')}
                 </td>
                 <td
                   data-testid={
                     `customer_checkout__element-order-table-sub-total-${index}`
                   }
                 >
-                  {(item.unitPrice * item.quantity).toFixed(2)}
+                  {(item.unitPrice * item.quantity)
+                    .toFixed(2)
+                    .replace(/\./g, ',')}
                 </td>
                 <td
                   data-testid={
                     `customer_checkout__element-order-table-remove-${index}`
                   }
                 >
-                  <button type="button">Remover</button>
+                  <button
+                    type="button"
+                    id={ item.productId }
+                    onClick={ handleRemove }
+                  >
+                    Remover
+                  </button>
                 </td>
               </tr>
             ))}
@@ -69,8 +95,7 @@ function Checkout() {
           data-testid="customer_checkout__element-order-total-price"
           type="button"
         >
-          {total}
-
+          {total.replace(/\./g, ',')}
         </button>
         <h1>Detalhes e Endereço para Entrega</h1>
         <Address />
