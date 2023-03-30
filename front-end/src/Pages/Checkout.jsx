@@ -101,6 +101,7 @@ function Checkout() {
         <Address />
       </section>
     </main>
+    // teste
   );
 }
 
