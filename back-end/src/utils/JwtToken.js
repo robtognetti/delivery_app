@@ -1,13 +1,17 @@
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
+
+const SECRET = fs.readFileSync('./jwt.evaluation.key');
 
 const createToken = (user) => {
-  const { email, role } = user;
+  const { email, role, name } = user;
   const token = jwt.sign(
     {
-        email,
-        role,
+      name,
+      email,
+      role,
     },
-    'secret_key',
+    SECRET,
     {
       expiresIn: '12h',
     },

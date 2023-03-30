@@ -19,6 +19,7 @@ function Login() {
           password,
         },
       );
+      localStorage.setItem('user', JSON.stringify(res.data));
       const { role } = res.data;
       console.log(role);
       if (role === 'customer') {
@@ -28,6 +29,8 @@ function Login() {
       setError(err.response.data.message);
     }
   };
+
+  localStorage.setItem('carrinho', JSON.stringify([]));
 
   const validateInputs = () => {
     const MIN_PASSWORD_LENGTH = 6;
