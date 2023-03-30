@@ -1,40 +1,74 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Context } from '../Context/Context';
+import './Card.css';
 
 function Card({ card }) {
-  const [quantity, setquantity] = useState(0);
+  const [quantity, setquantity] = useState('');
+  const { setUpdate, update } = useContext(Context);
 
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('carrinho'));
-    const index = cart.findIndex((item) => +item.id === card.id);
+    const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+    const index = cart.findIndex((item) => +item.productId === card.id);
     if (index >= 0) {
       setquantity(cart[index].quantity);
     } else {
       setquantity(0);
     }
   });
-  const handleAddProduct = ({ target: { id } }) => {
+  const handleInput = ({ target: { id, value, name } }) => {
+    if (+value < 0) {
+      setquantity(0);
+    } else {
+      setquantity(+value);
+    }
     const cart = JSON.parse(localStorage.getItem('carrinho'));
-    const index = cart.findIndex((item) => item.id === id);
+    const index = cart.findIndex((item) => item.productId === id);
     if (index < 0) {
-      const newItem = { id, quantity: 1 };
+      const newItem = {
+        productId: id,
+        name,
+        quantity: +value,
+        unitPrice: +card.price,
+      };
       cart.push(newItem);
     } else {
-      cart[index].quantity += 1;
+      cart[index].quantity = +value;
     }
     localStorage.setItem('carrinho', JSON.stringify(cart));
     setquantity();
+    setUpdate(!update);
+  };
+
+  const handleAddProduct = ({ target: { id, name } }) => {
+    const cart = JSON.parse(localStorage.getItem('carrinho'));
+    const index = cart.findIndex((item) => item.productId === id);
+    if (index < 0) {
+      const newItem = {
+        productId: id,
+        name,
+        quantity: 1,
+        unitPrice: +card.price,
+      };
+      cart.push(newItem);
+    } else {
+      cart[index].quantity = Number(cart[index].quantity) + Number(1);
+    }
+    localStorage.setItem('carrinho', JSON.stringify(cart));
+    setquantity();
+    setUpdate(!update);
   };
 
   const handleRemoveProduct = ({ target: { id } }) => {
     console.log(id);
     const cart = JSON.parse(localStorage.getItem('carrinho'));
-    const index = cart.findIndex((item) => item.id === id);
+    const index = cart.findIndex((item) => item.productId === id);
     if (index >= 0 && cart[index].quantity > 0) {
-      cart[index].quantity -= 1;
+      cart[index].quantity -= Number(1);
     }
     localStorage.setItem('carrinho', JSON.stringify(cart));
     setquantity();
+    setUpdate(!update);
   };
 
   return (
@@ -42,12 +76,13 @@ function Card({ card }) {
       <div className="Card__container">
         <div className="Card__container__top">
           <p data-testid={ `customer_products__element-card-price-${card.id}` }>
-            {(card.price).replace(/\./g, ',')}
+            {card.price.replace(/\./g, ',')}
           </p>
           <img
             data-testid={ `customer_products__img-card-bg-image-${card.id}` }
             src={ card.urlImage }
             alt={ card.name }
+            style={ { width: '100px' } }
           />
         </div>
         <div className="Card__container__down">
@@ -59,6 +94,7 @@ function Card({ card }) {
           </h2>
           <div className="Card__container-buttons">
             <button
+              name={ card.name }
               type="button"
               data-testid={ `customer_products__button-card-rm-item-${card.id}` }
               id={ card.id }
@@ -69,13 +105,20 @@ function Card({ card }) {
             <input
               data-testid={ `customer_products__input-card-quantity-${card.id}` }
               type="number"
-              value={ quantity }
+              min={ 0 }
+              id={ card.id }
+              name={ card.name }
+              value={ +quantity }
+              onChange={ handleInput }
+              placeholder="0"
             />
             <button
               type="button"
               data-testid={ `customer_products__button-card-add-item-${card.id}` }
               id={ card.id }
               onClick={ handleAddProduct }
+              price={ card.price }
+              name={ card.name }
             >
               +
             </button>

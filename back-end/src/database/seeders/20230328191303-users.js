@@ -19,6 +19,7 @@ const user3 = {
   password: '1c37466c159755ce1fa181bd247cb925',
   role: 'customer',
 };
+
 module.exports = {
   async up(queryInterface, _Sequelize) {
     await queryInterface.bulkInsert('users', [user1, user2, user3], {});
