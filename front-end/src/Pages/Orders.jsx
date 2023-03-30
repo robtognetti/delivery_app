@@ -33,8 +33,7 @@ function Orders() {
             { dateString }
           </label>
           <button
-            // eslint-disable-next-line max-len
-            data-testid="customer_order_details__element-order-details-label-delivery-status"
+            // data-testid="customer_order_details__element-order-details-label-delivery-status"
             type="button"
           >
             ENTREGUE
