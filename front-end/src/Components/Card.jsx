@@ -5,7 +5,7 @@ import './Card.css';
 
 function Card({ card }) {
   const [quantity, setquantity] = useState('');
-  const { setUpdate, update } = useContext(Context);
+  const { setUpdate, update, getTotalPriceFromCart } = useContext(Context);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -38,6 +38,7 @@ function Card({ card }) {
     localStorage.setItem('carrinho', JSON.stringify(cart));
     setquantity();
     setUpdate(!update);
+    getTotalPriceFromCart();
   };
 
   const handleAddProduct = ({ target: { id, name } }) => {
@@ -57,6 +58,7 @@ function Card({ card }) {
     localStorage.setItem('carrinho', JSON.stringify(cart));
     setquantity();
     setUpdate(!update);
+    getTotalPriceFromCart();
   };
 
   const handleRemoveProduct = ({ target: { id } }) => {
@@ -69,6 +71,7 @@ function Card({ card }) {
     localStorage.setItem('carrinho', JSON.stringify(cart));
     setquantity();
     setUpdate(!update);
+    getTotalPriceFromCart();
   };
 
   return (
