@@ -34,6 +34,7 @@ function Address() {
       ...newSale,
     });
     console.log(sale);
+    // coments
     navigate('/login');
   };
   return (
