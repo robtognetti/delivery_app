@@ -1,8 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 function Card({ card }) {
   const [quantity, setquantity] = useState(0);
-  console.log(card);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('carrinho'));
+    const index = cart.findIndex((item) => +item.id === card.id);
+    if (index >= 0) {
+      setquantity(cart[index].quantity);
+    } else {
+      setquantity(0);
+    }
+  });
+  const handleAddProduct = ({ target: { id } }) => {
+    const cart = JSON.parse(localStorage.getItem('carrinho'));
+    const index = cart.findIndex((item) => item.id === id);
+    if (index < 0) {
+      const newItem = { id, quantity: 1 };
+      cart.push(newItem);
+    } else {
+      cart[index].quantity += 1;
+    }
+    localStorage.setItem('carrinho', JSON.stringify(cart));
+    setquantity();
+  };
+
+  const handleRemoveProduct = ({ target: { id } }) => {
+    console.log(id);
+    const cart = JSON.parse(localStorage.getItem('carrinho'));
+    const index = cart.findIndex((item) => item.id === id);
+    if (index >= 0 && cart[index].quantity > 0) {
+      cart[index].quantity -= 1;
+    }
+    localStorage.setItem('carrinho', JSON.stringify(cart));
+    setquantity();
+  };
+
   return (
     <div className="Card">
       <div className="Card__container">
@@ -27,6 +61,8 @@ function Card({ card }) {
             <button
               type="button"
               data-testid={ `customer_products__button-card-rm-item-${card.id}` }
+              id={ card.id }
+              onClick={ handleRemoveProduct }
             >
               -
             </button>
@@ -38,6 +74,8 @@ function Card({ card }) {
             <button
               type="button"
               data-testid={ `customer_products__button-card-add-item-${card.id}` }
+              id={ card.id }
+              onClick={ handleAddProduct }
             >
               +
             </button>
@@ -47,5 +85,11 @@ function Card({ card }) {
     </div>
   );
 }
+Card.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  urlImage: PropTypes.string.isRequired,
+}.isRequired;
 
 export default Card;

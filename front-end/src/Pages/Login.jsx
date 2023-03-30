@@ -30,6 +30,8 @@ function Login() {
     }
   };
 
+  localStorage.setItem('carrinho', JSON.stringify([]));
+
   const validateInputs = () => {
     const MIN_PASSWORD_LENGTH = 6;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
