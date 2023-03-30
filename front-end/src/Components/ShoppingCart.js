@@ -4,18 +4,7 @@ import { Context } from '../Context/Context';
 
 function ShoppingCart() {
   const navigate = useNavigate();
-  const [total, settotal] = useState(0);
-  const { update } = useContext(Context);
-  function getTotalPriceFromCart() {
-    const cartItems = JSON.parse(localStorage.getItem('carrinho'));
-
-    const totalPrice = cartItems.reduce((acc, item) => {
-      const { quantity, unitPrice } = item;
-      return acc + (quantity * unitPrice);
-    }, 0);
-    settotal(totalPrice.toFixed(2));
-    return totalPrice.toFixed(2);
-  }
+  const { update, total, getTotalPriceFromCart } = useContext(Context);
 
   useEffect(() => {
     getTotalPriceFromCart();
