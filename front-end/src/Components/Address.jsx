@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import { Context } from '../Context/Context';
 
 function Address() {
@@ -27,13 +28,14 @@ function Address() {
   const handleSubmit = async () => {
     const userId = JSON.parse(localStorage.getItem('userID'));
     const { token } = JSON.parse(localStorage.getItem('user'));
+    const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
     const newSale = {
       sellerId: seller,
       userId,
       totalPrice: total,
       deliveryAddress: address,
       deliveryNumber: door,
-      saleDate: new Date(),
+      saleDate: moment.utc(new Date()).format(),
       status: 'Pendente',
     };
     const sales = await axios.post(
@@ -47,9 +49,26 @@ function Address() {
         },
       },
     );
-    console.log(sales.data.sale.id);
-    const id = Number(sales.data.sale.id);
-    navigate(`/customer/orders/${id}`);
+    const idSale = Number(sales.data.sale.id);
+
+    cart.forEach(async (item) => {
+      const { productId, quantity } = item;
+      await axios.post(
+        'http://localhost:3001/products/sales',
+        {
+          saleId: idSale,
+          productId,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+    });
+
+    navigate(`/customer/orders/${idSale}`);
   };
   return (
     <div className="Address">
