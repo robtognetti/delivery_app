@@ -4,38 +4,52 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../Context/Context';
 
 function Address() {
+  const data = new Date();
+  console.log(data);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const { total } = useContext(Context);
   const [address, setAddress] = useState('');
   const [door, setDoor] = useState('');
-  const [seller, setSeller] = useState('');
+  const [seller, setSeller] = useState(2);
   const [sellers, setSellers] = useState([]);
-  const User = JSON.parse(localStorage.getItem('user'));
+
   const fetchSellers = async () => {
     const sellersData = await axios.get('http://localhost:3001/users/sellers');
     setSellers(sellersData.data);
     setIsLoading(false);
   };
+
   useEffect(() => {
     fetchSellers();
   }, [total]);
+
   const handleSubmit = async () => {
+    const userId = JSON.parse(localStorage.getItem('userID'));
+    const { token } = JSON.parse(localStorage.getItem('user'));
     const newSale = {
       sellerId: seller,
-      buyerId: User.id,
+      userId,
       totalPrice: total,
       deliveryAddress: address,
       deliveryNumber: door,
       saleDate: new Date(),
       status: 'Pendente',
     };
-    const sale = await axios.post('http://localhost:3001/sales', {
-      ...newSale,
-    });
-    console.log(sale);
-    // coments
-    navigate('/login');
+    const sales = await axios.post(
+      'http://localhost:3001/sales',
+      {
+        ...newSale,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    console.log(sales.data.sale.id);
+    const id = Number(sales.data.sale.id);
+    navigate(`/customer/orders/${id}`);
   };
   return (
     <div className="Address">
@@ -53,9 +67,9 @@ function Address() {
                 onChange={ (e) => setSeller(e.target.value) }
                 data-testid="customer_checkout__select-seller"
               >
-                {sellers.map((sellersData) => (
-                  <option key={ sellersData.id } value={ sellersData.id }>
-                    {seller.name}
+                {sellers.map((sel) => (
+                  <option key={ sel.id } value={ sel.id }>
+                    {sel.name}
                   </option>
                 ))}
               </select>
