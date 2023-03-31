@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import moment from 'moment';
+
 import Navbar from '../Components/Navbar';
 import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
@@ -9,8 +9,6 @@ function Checkout() {
   const { total, update, setUpdate, getTotalPriceFromCart } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
 
-  const date = new Date();
-  console.log(moment.utc(date).format());
   useEffect(() => {
   }, [total]);
 

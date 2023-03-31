@@ -52,12 +52,12 @@ function Address() {
     const idSale = Number(sales.data.sale.id);
 
     cart.forEach(async (item) => {
-      const { id, quantity } = item;
+      const { productId, quantity } = item;
       await axios.post(
         'http://localhost:3001/products/sales',
         {
           saleId: idSale,
-          productId: id,
+          productId,
           quantity,
         },
         {
