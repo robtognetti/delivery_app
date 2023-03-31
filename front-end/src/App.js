@@ -7,6 +7,7 @@ import Register from './Pages/Register';
 import Orders from './Pages/Orders';
 import MyOrders from './Pages/MyOrders';
 import Checkout from './Pages/Checkout';
+import SellerOrders from './Pages/SellerOrders';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
       <Route exact path="/customer/orders" element={ <MyOrders /> } />
       <Route exact path="/customer/orders/:id" element={ <Orders /> } />
       <Route exact path="/customer/checkout" element={ <Checkout /> } />
+      <Route exact path="/seller/orders" element={ <SellerOrders /> } />
+
     </Routes>
 
   );

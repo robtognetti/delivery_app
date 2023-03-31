@@ -26,6 +26,9 @@ function Login() {
       if (role === 'customer') {
         navigate('/customer/products');
       }
+      if (role === 'seller') {
+        navigate('/seller/orders');
+      }
     } catch (err) {
       setError(err.response.data.message);
     }
@@ -46,6 +49,9 @@ function Login() {
     const currentUser = JSON.parse(localStorage.getItem('user')) || {};
     if (currentUser.role === 'customer') {
       navigate('/customer/products');
+    }
+    if (currentUser.role === 'seller') {
+      navigate('/seller/orders');
     }
     validateInputs();
   }, [email, password]);

@@ -20,8 +20,15 @@ const { Sale } = require('../../database/models/index');
       return sale;
     };
 
+    const getUserSalesSellerService = async (req) => {
+      const { sellerId } = req.body;
+      const salesSeller = await Sale.findAll({ where: { sellerId } });
+      return salesSeller;
+  };
+
 module.exports = {
   createSalesService,
   getUserSalesService,
   getSaleById,
+  getUserSalesSellerService,
 };
