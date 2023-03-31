@@ -23,7 +23,6 @@ function Login() {
       localStorage.setItem('userID', JSON.stringify(id));
       localStorage.setItem('user', JSON.stringify(others));
       const { role } = res.data;
-      console.log(role);
       if (role === 'customer') {
         navigate('/customer/products');
       }
@@ -38,13 +37,16 @@ function Login() {
     const MIN_PASSWORD_LENGTH = 6;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const emailIsValid = emailRegex.test(email);
-    console.log(emailIsValid);
     if (password.length >= MIN_PASSWORD_LENGTH && emailIsValid) {
       setIsValid(true);
     }
   };
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+    if (currentUser.role === 'customer') {
+      navigate('/customer/products');
+    }
     validateInputs();
   }, [email, password]);
 

@@ -32,7 +32,6 @@ function Register() {
     const MIN_NAME = 12;
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const emailIsValid = emailRegex.test(email);
-    console.log(emailIsValid);
     if (
       password.length >= MIN_PASSWORD_LENGTH
       && emailIsValid

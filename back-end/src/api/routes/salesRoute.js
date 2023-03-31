@@ -1,5 +1,5 @@
 const express = require('express');
-const { salesCreateController } = require('../controllers/SaleController');
+const { salesCreateController, salesGetController } = require('../controllers/SaleController');
 
 const salesRoute = express.Router();
 
@@ -8,4 +8,5 @@ salesRoute.post(
   salesCreateController,
 );
 
+salesRoute.post('/salesGet', (req, res) => salesGetController(req, res));
 module.exports = salesRoute;

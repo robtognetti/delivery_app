@@ -16,12 +16,21 @@ function Navbar() {
           ({ display: 'flex' })
         }
       >
-        <h4 data-testid="customer_products__element-navbar-link-products">
+        <button
+          type="button"
+          onClick={ () => navigate('/customer/products') }
+          data-testid="customer_products__element-navbar-link-products"
+        >
           Produtos
-        </h4>
-        <h4 data-testid="customer_products__element-navbar-link-orders">
+        </button>
+        <button
+          type="button"
+          onClick={ () => navigate('/customer/orders') }
+          data-testid="customer_products__element-navbar-link-orders"
+        >
           Meus Pedidos
-        </h4>
+
+        </button>
         <h4 data-testid="customer_products__element-navbar-user-full-name">
           {currentUser ? currentUser.name : 'Nome do Usuário'}
         </h4>

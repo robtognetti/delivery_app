@@ -5,6 +5,7 @@ import Login from './Pages/Login';
 import Products from './Pages/Products';
 import Register from './Pages/Register';
 import Orders from './Pages/Orders';
+import MyOrders from './Pages/MyOrders';
 import Checkout from './Pages/Checkout';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
       <Route exact path="/login" element={ <Login /> } />
       <Route exact path="/customer/products" element={ <Products /> } />
       <Route exact path="/register" element={ <Register /> } />
-      <Route exact path="/customer/orders" element={ <Orders /> } />
+      <Route exact path="/customer/orders" element={ <MyOrders /> } />
       <Route exact path="/customer/orders/:id" element={ <Orders /> } />
       <Route exact path="/customer/checkout" element={ <Checkout /> } />
     </Routes>

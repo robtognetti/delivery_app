@@ -8,5 +8,11 @@ const { Sale } = require('../../database/models/index');
     } catch (err) {
         console.log(err);
     }
-};
-module.exports = { createSalesService };
+ };
+    const getUserSalesService = async (req) => {
+        const { userId } = req.body;
+        const sales = await Sale.findAll({ where: { userId } });
+        return sales;
+    };
+
+module.exports = { createSalesService, getUserSalesService };
