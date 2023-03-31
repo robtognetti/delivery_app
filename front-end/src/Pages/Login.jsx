@@ -43,6 +43,10 @@ function Login() {
   };
 
   useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+    if (currentUser.role === 'customer') {
+      navigate('/customer/products');
+    }
     validateInputs();
   }, [email, password]);
 
