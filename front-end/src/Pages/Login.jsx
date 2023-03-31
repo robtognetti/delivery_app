@@ -19,7 +19,9 @@ function Login() {
           password,
         },
       );
-      localStorage.setItem('user', JSON.stringify(res.data));
+      const { id, ...others } = res.data;
+      localStorage.setItem('userID', JSON.stringify(id));
+      localStorage.setItem('user', JSON.stringify(others));
       const { role } = res.data;
       console.log(role);
       if (role === 'customer') {

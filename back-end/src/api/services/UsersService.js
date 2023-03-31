@@ -5,4 +5,9 @@ const usersGetService = async () => {
     console.log(allProducts);
     return allProducts;
 };
-module.exports = { usersGetService };
+
+const userGetService = async (email) => {
+    const user = await User.findOne({ where: { email } });
+    return user;
+};
+module.exports = { usersGetService, userGetService };

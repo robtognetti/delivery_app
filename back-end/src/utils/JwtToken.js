@@ -20,4 +20,10 @@ const createToken = (user) => {
   return token;
 };
 
-module.exports = { createToken };
+const addToken = (req, res, next) => {
+  const token = createToken(req.body);
+  req.headers.authorization = token;
+  next();
+};
+
+module.exports = { createToken, addToken };
