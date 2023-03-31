@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
@@ -6,6 +6,8 @@ import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 
 function Orders() {
+  const [order, setOrder] = useState({});
+  const [sellerName, setSellerName] = useState({});
   function formatDate() {
     const date = new Date();
     return date.toLocaleDateString('pt-br');
@@ -14,8 +16,10 @@ function Orders() {
   const { id } = useParams();
 
   const getOrder = async (orderId) => {
-    const order = await axios.get(`http://localhost:3001/orders/${orderId}`);
-    console.log(order);
+    const sale = await axios.get(`http://localhost:3001/orders/${orderId}`);
+    setOrder(sale.data);
+    const seller = await axios.get('http://localhost:3001/usersId', { id: sale.data.sellerId });
+    console.log(seller);
   };
 
   getOrder(id);
@@ -33,13 +37,13 @@ function Orders() {
             htmlFor="id_order"
             data-testid="customer_order_details__element-order-details-label-order-id"
           >
-            {/* id que vem req 20/21 */}
+            <p>{order.id}</p>
           </label>
           <label
             htmlFor="id_seller"
             data-testid="customer_order_details__element-order-details-label-seller-name"
           >
-            {/* id que vem req 20/21 */}
+            <p>{order.sellerId}</p>
           </label>
           <label
             htmlFor="sale_date"

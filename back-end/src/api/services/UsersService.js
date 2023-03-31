@@ -10,4 +10,9 @@ const userGetService = async (email) => {
     const user = await User.findOne({ where: { email } });
     return user;
 };
-module.exports = { usersGetService, userGetService };
+
+const userGetById = async (id) => {
+  const user = await User.findOne({ where: { id } });
+  return user;
+};
+module.exports = { usersGetService, userGetService, userGetById };
