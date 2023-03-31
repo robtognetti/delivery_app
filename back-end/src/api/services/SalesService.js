@@ -15,10 +15,20 @@ const { Sale } = require('../../database/models/index');
         return sales;
     };
 
-    const getUserSalesSellerService = async (req) => {
-        const { sellerId } = req.body;
-        const salesSeller = await Sale.findAll({ where: { sellerId } });
-        return salesSeller;
+    const getSaleById = async (id) => {
+      const sale = await Sale.findOne({ where: { id } });
+      return sale;
     };
 
-module.exports = { createSalesService, getUserSalesService, getUserSalesSellerService };
+    const getUserSalesSellerService = async (req) => {
+      const { sellerId } = req.body;
+      const salesSeller = await Sale.findAll({ where: { sellerId } });
+      return salesSeller;
+  };
+
+module.exports = {
+  createSalesService,
+  getUserSalesService,
+  getSaleById,
+  getUserSalesSellerService,
+};

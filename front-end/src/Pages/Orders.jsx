@@ -1,13 +1,32 @@
 import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
 import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 
 function Orders() {
-  const [dateString] = useState(new Date().toLocaleDateString());
+  const [order, setOrder] = useState({});
+  const [sellerName, setSellerName] = useState({});
+  function formatDate() {
+    const date = new Date();
+    return date.toLocaleDateString('pt-br');
+  }
+
+  const { id } = useParams();
+
+  const getOrder = async (orderId) => {
+    const sale = await axios.get(`http://localhost:3001/orders/${orderId}`);
+    setOrder(sale.data);
+    const seller = await axios.get('http://localhost:3001/usersId', { id: sale.data.sellerId });
+    console.log(seller);
+  };
+
+  getOrder(id);
 
   const { total } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+  const status = 'customer_order_details__element-order-details-label-delivery-status';
   return (
     <main className="Checkout">
       <Navbar />
@@ -18,22 +37,22 @@ function Orders() {
             htmlFor="id_order"
             data-testid="customer_order_details__element-order-details-label-order-id"
           >
-            {/* id que vem req 20/21 */}
+            <p>{order.id}</p>
           </label>
           <label
             htmlFor="id_seller"
             data-testid="customer_order_details__element-order-details-label-seller-name"
           >
-            {/* id que vem req 20/21 */}
+            <p>{order.sellerId}</p>
           </label>
           <label
             htmlFor="sale_date"
             data-testid="customer_order_details__element-order-details-label-order-date"
           >
-            { dateString }
+            { formatDate() }
           </label>
           <button
-            // data-testid="customer_order_details__element-order-details-label-delivery-status"
+            data-testid={ status }
             type="button"
           >
             ENTREGUE
