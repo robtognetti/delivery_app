@@ -15,4 +15,13 @@ const { Sale } = require('../../database/models/index');
         return sales;
     };
 
-module.exports = { createSalesService, getUserSalesService };
+    const getSaleById = async (id) => {
+      const sale = await Sale.findOne({ where: { id } });
+      return sale;
+    };
+
+module.exports = {
+  createSalesService,
+  getUserSalesService,
+  getSaleById,
+};

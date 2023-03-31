@@ -1,13 +1,28 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
 import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 
 function Orders() {
-  const [dateString] = useState(new Date().toLocaleDateString());
+  function formatDate() {
+    const date = new Date();
+    return date.toLocaleDateString('pt-br');
+  }
+
+  const { id } = useParams();
+
+  const getOrder = async (orderId) => {
+    const order = await axios.get(`http://localhost:3001/orders/${orderId}`);
+    console.log(order);
+  };
+
+  getOrder(id);
 
   const { total } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+  const status = 'customer_order_details__element-order-details-label-delivery-status';
   return (
     <main className="Checkout">
       <Navbar />
@@ -30,10 +45,10 @@ function Orders() {
             htmlFor="sale_date"
             data-testid="customer_order_details__element-order-details-label-order-date"
           >
-            { dateString }
+            { formatDate() }
           </label>
           <button
-            // data-testid="customer_order_details__element-order-details-label-delivery-status"
+            data-testid={ status }
             type="button"
           >
             ENTREGUE
