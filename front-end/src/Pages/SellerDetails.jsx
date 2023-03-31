@@ -7,8 +7,7 @@ import { Context } from '../Context/Context';
 function SellerDetails() {
   const { id } = useParams();
   const [order, setOrder] = useState({});
-  const [products, setproducts] = useState([]);
-  const [sellerName, setSellerName] = useState('');
+  const [sellerName] = useState('');
   const [totalProducts, settotalProducts] = useState([]);
   const { update, setUpdate } = useContext(Context);
 
