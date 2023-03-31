@@ -62,7 +62,6 @@ function Card({ card }) {
   };
 
   const handleRemoveProduct = ({ target: { id } }) => {
-    console.log(id);
     const cart = JSON.parse(localStorage.getItem('carrinho'));
     const index = cart.findIndex((item) => item.productId === id);
     if (index >= 0 && cart[index].quantity > 0) {

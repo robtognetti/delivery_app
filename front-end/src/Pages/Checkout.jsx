@@ -14,7 +14,6 @@ function Checkout() {
 
   const handleRemove = ({ target: { id } }) => {
     const cartL = JSON.parse(localStorage.getItem('carrinho')) || [];
-    console.log(cartL);
     if (cartL !== []) {
       const newCart = cartL.filter((item) => item.productId !== id);
       localStorage.setItem('carrinho', JSON.stringify(newCart));
