@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Navbar from '../Components/Navbar';
@@ -6,23 +6,27 @@ import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 
 function Orders() {
+  const { id } = useParams();
   const [order, setOrder] = useState({});
-  const [sellerName, setSellerName] = useState({});
+  const [sellerName, setSellerName] = useState('');
   function formatDate() {
     const date = new Date();
     return date.toLocaleDateString('pt-br');
   }
 
-  const { id } = useParams();
-
-  const getOrder = async (orderId) => {
+  const getOrder = async () => {
+    const orderId = id;
     const sale = await axios.get(`http://localhost:3001/orders/${orderId}`);
+    console.log(sale.data.sellerId, 'OBJETO DA SALE');
     setOrder(sale.data);
-    const seller = await axios.get('http://localhost:3001/usersId', { id: sale.data.sellerId });
-    console.log(seller);
+    const seller = await axios.post('http://localhost:3001/usersId', { id: sale.data.sellerId });
+    console.log(seller, 'OBJETO Do seller');
+    setSellerName(seller.data.name);
   };
 
-  getOrder(id);
+  useEffect(() => {
+    getOrder();
+  }, []);
 
   const { total } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -43,7 +47,7 @@ function Orders() {
             htmlFor="id_seller"
             data-testid="customer_order_details__element-order-details-label-seller-name"
           >
-            <p>{order.sellerId}</p>
+            <p>{sellerName}</p>
           </label>
           <label
             htmlFor="sale_date"
@@ -55,11 +59,12 @@ function Orders() {
             data-testid={ status }
             type="button"
           >
-            ENTREGUE
+            {order.status}
           </button>
           <button
             data-testid="customer_order_details__button-delivery-check"
             type="button"
+            disabled
           >
             MARCAR COMO ENTREGUE
           </button>
@@ -114,7 +119,7 @@ function Orders() {
           data-testid="customer_order_details__element-order-total-price"
           type="button"
         >
-          {total}
+          {total.replace(/\./, ',')}
 
         </button>
       </section>
