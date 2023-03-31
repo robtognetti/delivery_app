@@ -1,9 +1,9 @@
 const { saleProducts } = require('../../database/models');
 
-const getSaleProductService = async () => {
-    console.log(saleProducts);
+const getSaleProductService = async (req) => {
+    const { saleProduct } = req.body;
     try {
-        const SalesProducts = await saleProducts.findAll({});
+        const SalesProducts = await saleProducts.findAll({ where: { saleId: saleProduct } });
         return SalesProducts;
     } catch (error) {
         console.log(error);

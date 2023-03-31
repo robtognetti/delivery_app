@@ -26,9 +26,17 @@ const { Sale } = require('../../database/models/index');
       return salesSeller;
   };
 
+  const salesStatusService = async (req) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const updatedSale = await Sale.update({ status }, { where: { id } });
+    return updatedSale;
+  };
+
 module.exports = {
   createSalesService,
   getUserSalesService,
   getSaleById,
   getUserSalesSellerService,
+  salesStatusService,
 };

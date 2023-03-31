@@ -1,10 +1,10 @@
 const { getSaleProductService,
      createSaleProductsService } = require('../services/SaleProductsService');
 
-const getSaleProductsController = async (_req, res) => {
-        const user = await getSaleProductService();
-        if (!user) return res.status(404).json({ message: 'No sales' });
-        return res.status(200).json(user);
+const getSaleProductsController = async (req, res) => {
+        const salesProducts = await getSaleProductService(req);
+        if (!salesProducts) return res.status(404).json({ message: 'No sales' });
+        return res.status(200).json(salesProducts);
     };
 
 const createSaleProductsController = async (req, res) => {
