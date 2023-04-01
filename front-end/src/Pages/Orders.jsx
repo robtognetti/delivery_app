@@ -6,9 +6,11 @@ import Descriptions from '../Components/Descriptions';
 import { Context } from '../Context/Context';
 
 function Orders() {
+  const { update, setUpdate } = useContext(Context);
   const { id } = useParams();
   const [order, setOrder] = useState({});
   const [sellerName, setSellerName] = useState('');
+  const [totalProducts, settotalProducts] = useState([]);
   function formatDate() {
     const date = new Date();
     return date.toLocaleDateString('pt-br');
@@ -22,14 +24,37 @@ function Orders() {
     const seller = await axios.post('http://localhost:3001/usersId', { id: sale.data.sellerId });
     console.log(seller, 'OBJETO Do seller');
     setSellerName(seller.data.name);
+    const saleProduct = sale.data.id;
+    const sales = await axios.post(
+      'http://localhost:3001/saleproducts',
+      { saleProduct },
+    );
+
+    console.log(sales.data);
+
+    const totalProductsList = sales.data;
+    console.log(totalProductsList, 'aqui');
+    const totaltotal = totalProductsList.map(async (product) => {
+      const productItem = await axios.get(`http://localhost:3001/products/${product.productId}`);
+      productItem.data.quntity = product.quantity;
+      return productItem.data;
+    });
+    const TotalPPP = await Promise.all(totaltotal);
+    settotalProducts(TotalPPP);
   };
 
   useEffect(() => {
     getOrder();
-  }, []);
+  }, [update]);
 
-  const { total } = useContext(Context);
-  const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
+  const handleChangeStatus = async (status) => {
+    await axios.put(
+      `http://localhost:3001/sales/${id}`,
+      { status },
+    );
+    setUpdate(!update);
+  };
+
   const status = 'customer_order_details__element-order-details-label-delivery-status';
   return (
     <main className="Checkout">
@@ -64,7 +89,8 @@ function Orders() {
           <button
             data-testid="customer_order_details__button-delivery-check"
             type="button"
-            disabled
+            disabled={ order.status !== 'Em Trânsito' }
+            onClick={ () => handleChangeStatus('Entregue') }
           >
             MARCAR COMO ENTREGUE
           </button>
@@ -74,7 +100,7 @@ function Orders() {
             <Descriptions />
           </thead>
           <tbody>
-            {cart.map((item, index) => (
+            {totalProducts.map((item, index) => (
               <tr key={ index }>
                 <td
                   data-testid={
@@ -95,21 +121,21 @@ function Orders() {
                     `customer_order_details__element-order-table-quantity-${index}`
                   }
                 >
-                  {item.quantity}
+                  {item.quntity}
                 </td>
                 <td
                   data-testid={
                     `customer_order_details__element-order-table-unit-price-${index}`
                   }
                 >
-                  {item.unitPrice}
+                  {item.price}
                 </td>
                 <td
                   data-testid={
                     `customer_order_details__element-order-table-sub-total-${index}`
                   }
                 >
-                  {(item.unitPrice * item.quantity).toFixed(2)}
+                  {(item.price * item.quntity).toFixed(2)}
                 </td>
               </tr>
             ))}
@@ -119,7 +145,10 @@ function Orders() {
           data-testid="customer_order_details__element-order-total-price"
           type="button"
         >
-          {total.replace(/\./, ',')}
+          {((totalProducts.reduce((acc, item) => {
+            const { quntity, price } = item;
+            return acc + (quntity * price);
+          }, 0)).toFixed(2).toString().replace(/\./g, ','))}
 
         </button>
       </section>

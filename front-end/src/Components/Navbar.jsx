@@ -14,19 +14,29 @@ function Navbar() {
         {currentUser.role === 'customer' && (
           <button
             type="button"
-            onClick={ () => navigate('/customer/products') }
+            onClick={ () => navigate('/seller/products') }
             data-testid="customer_products__element-navbar-link-products"
           >
             Produtos
           </button>
         )}
-        <button
-          type="button"
-          onClick={ () => navigate('/customer/orders') }
-          data-testid="customer_products__element-navbar-link-orders"
-        >
-          Meus Pedidos
-        </button>
+        {currentUser.role === 'customer' ? (
+          <button
+            type="button"
+            onClick={ () => navigate('/customer/orders') }
+            data-testid="customer_products__element-navbar-link-orders"
+          >
+            Meus Pedidos
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={ () => navigate('/seller/orders') }
+            data-testid="customer_products__element-navbar-link-orders"
+          >
+            Meus Pedidos
+          </button>
+        )}
         <h4 data-testid="customer_products__element-navbar-user-full-name">
           {currentUser ? currentUser.name : 'Nome do Usuário'}
         </h4>
