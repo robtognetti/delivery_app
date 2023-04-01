@@ -3,6 +3,7 @@ const {
   getUserSalesService,
   getSaleById,
   getUserSalesSellerService,
+  salesStatusService,
 } = require('../services/SalesService');
 
  const salesCreateController = async (req, res) => {
@@ -27,9 +28,15 @@ const salesGetSellerController = async (req, res) => {
   return res.status(200).json({ salesSeller });
 };
 
+const salesStatusController = async (req, res) => {
+  const saleUpdate = await salesStatusService(req);
+  return res.status(200).json({ saleUpdate });
+};
+
 module.exports = {
   salesCreateController,
   salesGetController,
   getSaleByIdController,
   salesGetSellerController,
+  salesStatusController,
 };

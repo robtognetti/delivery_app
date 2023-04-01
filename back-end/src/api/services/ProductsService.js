@@ -5,4 +5,9 @@ const { Product } = require('../../database/models/index');
     console.log(allProducts);
     return allProducts;
 };
-module.exports = { productsAllService };
+
+const productIdService = async (id) => {
+    const product = await Product.findOne({ where: { id } });
+    return product;
+};
+module.exports = { productsAllService, productIdService };
