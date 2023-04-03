@@ -15,4 +15,19 @@ const userGetById = async (id) => {
   const user = await User.findOne({ where: { id } });
   return user;
 };
-module.exports = { usersGetService, userGetService, userGetById };
+
+const allUsersService = async () => {
+  const allUsers = await User.findAll();
+  return allUsers;
+};
+
+const registerAdminService = async (user) => {
+  const { name, email, password, role } = user;
+  const userExist = await User.findOne({ where: { email } });
+  if (userExist) return false;
+  const result = await User.create({ name, email, password, role });
+  return result;
+};
+module.exports = { 
+  usersGetService, userGetService, userGetById, allUsersService, registerAdminService,
+ };
