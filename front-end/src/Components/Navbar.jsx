@@ -11,7 +11,7 @@ function Navbar() {
   return (
     <nav className="Navbar">
       <div className="Navbar__container" style={ { display: 'flex' } }>
-        {currentUser.role === 'customer' && (
+        {currentUser && currentUser.role === 'customer' && (
           <button
             type="button"
             onClick={ () => navigate('/seller/products') }
@@ -20,7 +20,7 @@ function Navbar() {
             Produtos
           </button>
         )}
-        {currentUser.role === 'customer' ? (
+        {currentUser && currentUser.role === 'customer' ? (
           <button
             type="button"
             onClick={ () => navigate('/customer/orders') }

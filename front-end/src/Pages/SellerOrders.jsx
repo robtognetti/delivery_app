@@ -14,7 +14,6 @@ function SellerOrders() {
       'http://localhost:3001/salesGetSeller',
       { sellerId },
     );
-    console.log(response);
     setOrders(response.data.salesSeller);
     setisLoading(false);
   };
