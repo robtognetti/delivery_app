@@ -24,7 +24,7 @@ function Provider({ children }) {
       getTotalPriceFromCart,
       total,
     }),
-    [update],
+    [update, total],
   );
 
   Provider.propTypes = {
