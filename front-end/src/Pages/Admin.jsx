@@ -113,7 +113,7 @@ function Admin() {
           </label>
 
           <label htmlFor="seller">
-            Tipo de UsuÃ¡rio
+            Tipo de Usuário
             <select
               name="role"
               id="role"
@@ -144,15 +144,6 @@ function Admin() {
         </form>
 
         <table>
-          <thead>
-            {/* <tr>
-              <th>Item</th>
-              <th>Nome</th>
-              <th>Email</th>
-              <th>Tipo</th>
-              <th>Excluir</th>
-            </tr> */}
-          </thead>
           <tbody>
             {users.map((user, index) => (
               <tr key={ user.id }>

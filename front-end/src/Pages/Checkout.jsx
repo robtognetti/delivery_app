@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import Navbar from '../Components/Navbar';
 import Descriptions from '../Components/Descriptions';
@@ -8,9 +8,6 @@ import Address from '../Components/Address';
 function Checkout() {
   const { total, update, setUpdate, getTotalPriceFromCart } = useContext(Context);
   const cart = JSON.parse(localStorage.getItem('carrinho')) || [];
-
-  useEffect(() => {
-  }, [total]);
 
   const handleRemove = ({ target: { id } }) => {
     const cartL = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -35,7 +32,6 @@ function Checkout() {
           <tbody>
             {cart.map((item, index) => (
               <tr key={ index }>
-                {console.log(item, 'ITEM')}
                 <td
                   data-testid={
                     `customer_checkout__element-order-table-item-number-${index}`
